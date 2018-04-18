@@ -9,5 +9,5 @@ def deploy(request):
     if request.META.get('HTTP_X_GITHUB_EVENT', 'unk') != 'push':
         return HttpResponse('NOT PUSH')
     print('deploying')
-    os.system('cd /web-server/cloud-server/ && git pull origin master')
+    os.system('cd /web-server/cloud-server/ && bash deploy.sh')
     return HttpResponse('OVER')
