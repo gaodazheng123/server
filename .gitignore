@@ -1,0 +1,12 @@
+wx/secret.py
+
+server/secret.py
+
+*/__pycache__/
+.idea/
+*.sqlite3
+
+static
+*.pyc
+uwsgi.log
+uwsgi.pid
