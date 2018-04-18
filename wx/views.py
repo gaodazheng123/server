@@ -4,6 +4,9 @@ from django.views.decorators.csrf import csrf_exempt
 from .secret import secret
 import xml.etree.ElementTree as ET
 import time
+import requests
+import json
+from server.settings import global_var
 
 
 def checksignature(request):
@@ -42,6 +45,20 @@ def reply(request):
                '</xml> ' % (msg['FromUserName'], msg['ToUserName'], time.time(), msg['Content'])
     return HttpResponse(response)
 
+
+def get_token(request):
+    url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={}&secret={}'.format(
+        secret['app_id'], secret['app_secret'])
+
+    if global_var['wx_token_expire_time'] - time.time() <= 0:
+        r = requests.get(url).content.decode()
+        o = json.loads(r)
+        if 'access_token' in o:
+            global_var['wx_token_expire_time'] = time.time() + o['expires_in']
+            global_var['wx_token'] = o['access_token']
+        else:
+            return HttpResponse(r)  # 返回错误代码
+    return HttpResponse(global_var['wx_token'])
 
 @csrf_exempt
 def wx(request):
