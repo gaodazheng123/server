@@ -29,7 +29,7 @@ if socket.gethostname() == 'VM-125-218-debian':
     DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'alphamj.cn', '123.206.57.166']
-
+APPEND_SLASH = False
 
 # Application definition
 
