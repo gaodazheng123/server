@@ -34,9 +34,31 @@ def reply(request):
     msg = {}
     for t in tree:
         msg[t.tag] = t.text
-    # if msg['MsgType'] != 'text':
-    #     msg['Content'] = '不支持的消息类型: %s' % msg['MsgType']
-    response = '<xml> ' \
+    if msg['MsgType'] = 'voice':
+        wget  -p   /root/yuyin
+                   '<xml> ' \
+                   '<ToUserName>%s</ToUserName> ' \
+                   '<FromUserName>%s</FromUserName> ' \
+                   '<CreateTime>%d</CreateTime> ' \
+                   '<MsgType>voice</MsgType> ' \
+                   '<MediaId>%s</MediaId>' \
+                   '< Format > %s < / Format >' \
+                   '<MsgId>1234567890123456</MsgId>' \
+                   '</xml> ' % (msg['FromUserName'], msg['ToUserName'], time.time(), msg['MediaId'], msg['Format'])
+        aipSpeech = AipSpeech('10926557', 'uSvnNr435r6wzMQ63bhSLRcs', '7f781f97c596cc02779a7450783b22a0')
+        result = aipSpeech.asr(msg['MediaId'])
+        response = '<xml> ' \
+           '<ToUserName>%s</ToUserName> ' \
+           '<FromUserName>%s</FromUserName> ' \
+           '<CreateTime>%d</CreateTime> ' \
+           '<MsgType>text</MsgType> <Content>' \
+           '%s</Content>' \
+           '</xml> ' % (msg['FromUserName'], msg['ToUserName'], time.time(), result['result'][0])
+        os.remove(msg['MediaId'])
+#        print (result['result'][0])
+    else:    #if msg['MsgType'] != 'text':
+    #    msg['Content'] = '不支持的消息类型: %s' % msg['MsgType']
+        response = '<xml> ' \
                '<ToUserName>%s</ToUserName> ' \
                '<FromUserName>%s</FromUserName> ' \
                '<CreateTime>%d</CreateTime> ' \
